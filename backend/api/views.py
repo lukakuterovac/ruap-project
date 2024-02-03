@@ -1,6 +1,7 @@
 import json
 
 import requests
+from django.core.serializers import serialize
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -85,3 +86,21 @@ def predict(request):
 
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+@csrf_exempt
+def data(request):
+    try:
+        # Retrieve all objects of YourModel
+        all_objects = AppleQuality.objects.all().order_by('-submit_date')
+
+        # Serialize the queryset to JSON
+        json_data = serialize('json', all_objects)
+
+        # Parse the serialized JSON data
+        parsed_data = json.loads(json_data)
+
+        # Return the JSON response
+        return JsonResponse({'data': parsed_data})
+    except Exception as e:
+        return JsonResponse({'error': f'Error retrieving objects: {e}'}, status=500)

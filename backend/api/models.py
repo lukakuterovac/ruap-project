@@ -5,7 +5,7 @@ import requests
 from django.core.exceptions import ValidationError
 from django.db import models
 
-DATASET_URL = 'https://appless9895196980.blob.core.windows.net/azureml-blobstore-93a8863e-5ea7-464f-8e41-215f242e5c08/UI/2024-02-01_170027_UTC/apple_quality_cleaned_01scale.csv'
+DATASET_URL = 'https://ruapprojectws0986254674.blob.core.windows.net/azureml-blobstore-6f4d0d41-88a2-4809-bf54-695717023bf3/UI/2024-02-03_201148_UTC/apple_quality_cleaned_01scale.csv'
 
 
 def populate_database():
@@ -53,3 +53,16 @@ class AppleQuality(models.Model):
 
     def __str__(self):
         return f'{self.pk} | {self.quality}'
+    
+    def new_from_dict(dict, is_user_submitted=False):
+        AppleQuality.objects.create(
+            size=float(dict['Size']),
+            weight=float(dict['Weight']),
+            sweetness=float(dict['Sweetness']),
+            crunchiness=float(dict['Crunchiness']),
+            juiciness=float(dict['Juiciness']),
+            ripeness=float(dict['Ripeness']),
+            acidity=float(dict['Acidity']),
+            quality=int(dict['Quality']),
+            is_user_submitted=is_user_submitted
+        )

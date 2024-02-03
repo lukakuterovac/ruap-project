@@ -1,17 +1,22 @@
+import json
+
 import requests
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-MODEL_URL = ''
+from .models import AppleQuality
+
+MODEL_URL = 'http://cda5d693-117a-4f0b-b879-28fc5fc943bf.westeurope.azurecontainer.io/score'
 
 
-def get_request_parameters(request):
-    size = request.GET.get('size')
-    weight = request.GET.get('weight')
-    sweetness = request.GET.get('sweetness')
-    crunchiness = request.GET.get('crunchiness')
-    juiciness = request.GET.get('juiciness')
-    ripeness = request.GET.get('ripeness')
-    acidity = request.GET.get('acidity')
+def get_request_parameters(post_request):
+    size = post_request.get('Size')
+    weight = post_request.get('Weight')
+    sweetness = post_request.get('Sweetness')
+    crunchiness = post_request.get('Crunchiness')
+    juiciness = post_request.get('Juiciness')
+    ripeness = post_request.get('Ripeness')
+    acidity = post_request.get('Acidity')
 
     parameters = {
             'Size': size,
@@ -27,10 +32,12 @@ def get_request_parameters(request):
 
 
 # Create your views here.
+@csrf_exempt
 def predict(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         # Get parameters from the request
-        parameters = get_request_parameters(request)
+        post_request = request.POST
+        parameters = get_request_parameters(post_request)
 
         # Ensure all parameters are present
         for value in parameters.values():
@@ -45,7 +52,7 @@ def predict(request):
             parameters[name] = int(value) / 10
 
         # Prepare data to send to the model
-        request = {
+        data = {
             "Inputs": {
                 "data": [
                     parameters
@@ -56,15 +63,20 @@ def predict(request):
             }
         }
 
+        body = str.encode(json.dumps(data))
+        headers = {'Content-Type': 'application/json'}
+
         try:
             # Send a POST request to the model API
-            response = requests.post(MODEL_URL, request)
+            response = requests.post(MODEL_URL, data=body, headers=headers)
 
             # Check if the request was successful
             if response.status_code == 200:
                 # Parse the model's response
                 model_output = response.json()
-                return JsonResponse({'prediction': model_output})
+                parameters['Quality'] = model_output['Results'][0]
+                AppleQuality.new_from_dict(dict=parameters, is_user_submitted=True)
+                return JsonResponse({'prediction': parameters['Quality']})
             else:
                 return JsonResponse({'error': 'Model prediction failed'}, status=500)
 

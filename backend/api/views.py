@@ -104,3 +104,38 @@ def data(request):
         return JsonResponse({'data': parsed_data})
     except Exception as e:
         return JsonResponse({'error': f'Error retrieving objects: {e}'}, status=500)
+
+
+@csrf_exempt
+def user_data(request):
+    try:
+        # Retrieve all objects of YourModel
+        all_objects = AppleQuality.objects.all().filter(is_user_submitted=True).order_by('-submit_date')
+
+        # Serialize the queryset to JSON
+        json_data = serialize('json', all_objects)
+
+        # Parse the serialized JSON data
+        parsed_data = json.loads(json_data)
+
+        # Return the JSON response
+        return JsonResponse({'data': parsed_data})
+    except Exception as e:
+        return JsonResponse({'error': f'Error retrieving objects: {e}'}, status=500)
+
+@csrf_exempt
+def dataset_data(request):
+    try:
+        # Retrieve all objects of YourModel
+        all_objects = AppleQuality.objects.all().filter(is_user_submitted=False).order_by('-submit_date')
+
+        # Serialize the queryset to JSON
+        json_data = serialize('json', all_objects)
+
+        # Parse the serialized JSON data
+        parsed_data = json.loads(json_data)
+
+        # Return the JSON response
+        return JsonResponse({'data': parsed_data})
+    except Exception as e:
+        return JsonResponse({'error': f'Error retrieving objects: {e}'}, status=500)

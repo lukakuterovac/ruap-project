@@ -3,6 +3,7 @@ import json
 import requests
 from django.core.serializers import serialize
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import AppleQuality
@@ -123,6 +124,7 @@ def user_data(request):
     except Exception as e:
         return JsonResponse({'error': f'Error retrieving objects: {e}'}, status=500)
 
+
 @csrf_exempt
 def dataset_data(request):
     try:
@@ -139,3 +141,19 @@ def dataset_data(request):
         return JsonResponse({'data': parsed_data})
     except Exception as e:
         return JsonResponse({'error': f'Error retrieving objects: {e}'}, status=500)
+
+
+@csrf_exempt
+def delete_data(request, id):
+    try:
+        # Retrieve the model object by its id
+        instance = get_object_or_404(AppleQuality, pk=id)
+
+        # Delete the object
+        instance.delete()
+
+        return JsonResponse({'message': f'Object with id {id} deleted successfully'})
+    except AppleQuality.DoesNotExist:
+        return JsonResponse({'error': 'Object not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': f'Error deleting object: {e}'}, status=500)

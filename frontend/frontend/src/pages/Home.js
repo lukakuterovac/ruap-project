@@ -1,47 +1,50 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
-
+import { Card } from 'antd';
+import Nav from '../components/Nav';
 
 function Home(){
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        // Make a GET request to your Django backend API endpoint
         axios.get('/api/data')
-          .then(response => {
-            // Handle successful response
-            setData(response.data.data);
-            console.log(response.data.data);
-          })
-          .catch(error => {
-            // Handle error
-            console.error('ERROR fetching data:', error);
-          });
-      }, []); // Empty dependency array means this effect runs once after the initial render
-    
+            .then(response => {
+                setData(response.data.data);
+            })
+            .catch(error => {
+                console.error('ERROR fetching data:', error);
+            });
+    }, []);
 
     return(
-        <div>
+        <div style={{ padding: '0 16px' }}>
+            <Nav></Nav>
             <p>This is Home page. Data:</p>
             {Array.isArray(data) ? (
-            <ul>
-                {data.map(entry => (
-                    <li key={entry.pk}>
-                        <strong>Entry {entry.pk}:</strong>
-                        <ul>
-                            {Object.entries(entry.fields).map(([key, value]) => (
-                                <li key={key}>
-                                    {key}: {value || 'N/A'}
-                                </li>
-                            ))}
-                        </ul>
-                    </li>
-                ))}
-            </ul>
-        ) : (
-            <p>No data available</p>
-        )}
-            
+                <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                    {data.map(entry => (
+                        <li key={entry.pk} style={{ width: 'calc(25% - 16px)', marginBottom: '16px' }}>
+                            <Card
+                                title={`Apple ${entry.pk}`} 
+                                bordered={false}
+                                style={{
+                                    width: '100%',
+                                }}
+                            >
+                                <ul style={{ listStyle: 'none', padding: 0 }}>
+                                    {Object.entries(entry.fields).map(([key, value]) => (
+                                        <li key={key}>
+                                            <p>{key}: {value || 'N/A'}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </Card>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No data available</p>
+            )}
         </div>
     );
 }

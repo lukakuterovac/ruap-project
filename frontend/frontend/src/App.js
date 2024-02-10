@@ -1,5 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 import Predict from "./pages/Predict";
 import Home from "./pages/Home";
 import Statistics from "./pages/Statistics";

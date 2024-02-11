@@ -54,7 +54,7 @@ const ScatterPlot = () => {
   const scatterConfig = {
     data: applesData.map((apple) => ({
       [xAxisKey]: apple.fields[xAxisKey],
-      [yAxisKey]: apple.fields[yAxisKey],
+      [yAxisKey]: apple.fields[yAxisKey] * 10,
       quality: apple.fields.quality,
     })),
     xField: xAxisKey,

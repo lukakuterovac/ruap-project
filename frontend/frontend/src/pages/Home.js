@@ -41,12 +41,17 @@ function Home() {
                                 <Card
                                     title={`Apple ${entry.pk}`}
                                     bordered={false}
+                                    headStyle={{ background: '#1890ff', color: '#fff', borderBottom: 0 }}
                                     style={{
                                         width: '100%',
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        justifyContent: 'center', // Center vertically
+                                        justifyContent: 'center',
                                         textAlign: 'center',
+                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                        borderRadius: '8px',
+                                        padding: '16px',
+                                        background: '#fff',
                                     }}
                                 >
                                     <ul style={{ listStyle: 'none', padding: 0 }}>

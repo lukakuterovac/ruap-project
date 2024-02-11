@@ -38,8 +38,14 @@ def get_request_parameters(post_request):
 def predict(request):
     if request.method == 'POST':
         # Get parameters from the request
-        post_request = request.POST
-        parameters = get_request_parameters(post_request)
+        try:
+            data = json.loads(request.body)
+            parameters = get_request_parameters(data)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+        #post_request = request.POST
+        #parameters = get_request_parameters(post_request)
 
         # Ensure all parameters are present
         for value in parameters.values():

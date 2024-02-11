@@ -12,13 +12,15 @@ MODEL_URL = 'http://cda5d693-117a-4f0b-b879-28fc5fc943bf.westeurope.azurecontain
 
 
 def get_request_parameters(post_request):
-    size = post_request.get('Size')
-    weight = post_request.get('Weight')
-    sweetness = post_request.get('Sweetness')
-    crunchiness = post_request.get('Crunchiness')
-    juiciness = post_request.get('Juiciness')
-    ripeness = post_request.get('Ripeness')
-    acidity = post_request.get('Acidity')
+    data = post_request.get('Inputs', {}).get('data', [{}])[0]
+
+    size = data.get('Size')
+    weight = data.get('Weight')
+    sweetness = data.get('Sweetness')
+    crunchiness = data.get('Crunchiness')
+    juiciness = data.get('Juiciness')
+    ripeness = data.get('Ripeness')
+    acidity = data.get('Acidity')
 
     parameters = {
             'Size': size,

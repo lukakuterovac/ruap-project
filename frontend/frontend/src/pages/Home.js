@@ -1,47 +1,67 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
-import { Card } from 'antd';
+import { Card, Pagination } from 'antd';
 import Nav from '../components/Nav';
 
-function Home(){
-    const [data, setData] = useState(null);
+function Home() {
+    const [allData, setAllData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         axios.get('/api/data')
             .then(response => {
-                setData(response.data.data);
+                setAllData(response.data.data);
             })
             .catch(error => {
                 console.error('ERROR fetching data:', error);
             });
     }, []);
 
-    return(
+    const getPageData = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return allData.slice(startIndex, endIndex);
+    };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    return (
         <div style={{ padding: '0 16px' }}>
             <Nav></Nav>
-            <p>This is Home page. Data:</p>
-            {Array.isArray(data) ? (
-                <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-                    {data.map(entry => (
-                        <li key={entry.pk} style={{ width: 'calc(25% - 16px)', marginBottom: '16px' }}>
-                            <Card
-                                title={`Apple ${entry.pk}`} 
-                                bordered={false}
-                                style={{
-                                    width: '100%',
-                                }}
-                            >
-                                <ul style={{ listStyle: 'none', padding: 0 }}>
-                                    {Object.entries(entry.fields).map(([key, value]) => (
-                                        <li key={key}>
-                                            <p>{key}: {value || 'N/A'}</p>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </Card>
-                        </li>
-                    ))}
-                </ul>
+            <strong><h2 style={{textAlign: "center"}}>Welcome to Apple Evaluation Model</h2></strong>
+            <p style={{textAlign: "center"}}>Dataset:</p>
+            {Array.isArray(allData) ? (
+                <>
+                    <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                        {getPageData().map(entry => (
+                            <li key={entry.pk} style={{ width: 'calc(25% - 16px)', marginBottom: '16px' }}>
+                                <Card
+                                    title={`Apple ${entry.pk}`}
+                                    bordered={false}
+                                    style={{
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center', // Center vertically
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                                        {Object.entries(entry.fields).map(([key, value]) => (
+                                            <li key={key}>
+                                                <p>{key}: {key === 'quality' ? (value.toFixed(4)) : (value * 10).toFixed(4) || 'N/A'}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </Card>
+                            </li>
+                        ))}
+                    </ul>
+                    <Pagination current={currentPage} total={allData.length} pageSize={itemsPerPage} onChange={handlePageChange} />
+                </>
             ) : (
                 <p>No data available</p>
             )}

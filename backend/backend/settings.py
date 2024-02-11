@@ -74,10 +74,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # CORS settings
-CORS_ORIGIN_ALLOW_ALL = False  # Disable if you want to restrict to certain origins
+CORS_ORIGIN_ALLOW_ALL = True  # Disable if you want to restrict to certain origins
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',  # Make sure to include the protocol
+    'http://localhost:3000',
 ]
 
 #CSRF_TRUSTED_ORIGINS = ["https://localhost:3000",]

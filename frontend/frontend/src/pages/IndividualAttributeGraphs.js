@@ -87,7 +87,7 @@ const IndividualAttributeGraphs = ({
   const lineChartConfig = {
     data: lineChartData,
     xField: "interval",
-    yField: ["0", "1"],
+    yField: ["1", "0"],
     color: ["#1890FF", "#FF4D4F"],
     label: {},
     point: {},
@@ -130,7 +130,7 @@ const IndividualAttributeGraphs = ({
                 transform: "rotateZ(180deg)",
               }}
             >
-              Number of Apples
+              Number of Apples within range
             </div>
           </div>
           <div style={{ marginLeft: "50px", width: "95%" }}>
@@ -138,7 +138,7 @@ const IndividualAttributeGraphs = ({
             <Line {...lineChartConfig} />
           </div>
         </div>
-        <div style={{ textAlign: "center" }}>10^2 Measure</div>
+        <div style={{ textAlign: "center" }}>Apple number (10^2)</div>
       </div>
       <div>
         <h3>{`Apple ${attributeName} Distribution`}</h3>

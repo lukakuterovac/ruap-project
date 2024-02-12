@@ -1,0 +1,39 @@
+/* styles.css */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 256px;
+  background: #001529;
+  color: #fff;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.menu-button {
+  margin-bottom: 16px;
+}
+
+.menu {
+  background: #001529;
+}
+
+.menu-item,
+.menu-submenu-title {
+  color: #fff;
+}
+
+.menu-item:hover,
+.menu-submenu-title:hover {
+  background: #1890ff;
+}

@@ -51,21 +51,29 @@ const ScatterPlot = () => {
     setYAxisKey(value);
   };
 
-  const scatterConfig = {
-    data: applesData.map((apple) => ({
-      [xAxisKey]: apple.fields[xAxisKey],
-      [yAxisKey]: apple.fields[yAxisKey] * 10,
-      quality: apple.fields.quality,
-    })),
-    xField: xAxisKey,
-    yField: yAxisKey,
-    colorField: "quality",
-    pointStyle: {
-      fill: "white",
-      stroke: "#5B8FF9",
-      lineWidth: 2,
-    },
-  };
+  const filteredApplesData = applesData
+  .filter((apple) => apple.fields.weight < 0.8) // Filter based on the weight condition
+  .map((apple) => ({
+    [xAxisKey]: apple.fields[xAxisKey] * 10,
+    [yAxisKey]: apple.fields[yAxisKey] * 10,
+    quality: apple.fields.quality,
+  }));
+
+const scatterConfig = {
+  data: filteredApplesData,
+  xField: xAxisKey,
+  yField: yAxisKey,
+  colorField: "quality",
+  pointStyle: {
+    fill: "white",
+    stroke: "#5B8FF9",
+    lineWidth: 2,
+  },
+  yAxis: {
+    min: 0,
+    max: 250,
+  },
+};
 
   return (
     <div>

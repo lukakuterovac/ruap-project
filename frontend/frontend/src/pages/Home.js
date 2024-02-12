@@ -55,11 +55,21 @@ function Home() {
                                     }}
                                 >
                                     <ul style={{ listStyle: 'none', padding: 0 }}>
-                                        {Object.entries(entry.fields).map(([key, value]) => (
-                                            <li key={key}>
-                                                <p>{key}: {key === 'quality' ? (value.toFixed(4)) : (value * 10).toFixed(4) || 'N/A'}</p>
-                                            </li>
-                                        ))}
+                                        {Object.entries(entry.fields)
+                                            .filter(([key]) => key !== 'is_user_submitted' && key !== 'submit_date')
+                                            .map(([key, value]) => (
+                                                <li key={key}>
+                                                    <p>{key.charAt(0).toUpperCase() + key.slice(1)}:
+                                                        {key === 'quality' ? (
+                                                            <span style={{ color: value === 1 ? 'green' : 'red' }}>
+                                                                {value === 1 ? ' Good' : ' Bad'}
+                                                            </span>
+                                                        ) : (
+                                                            " " + value.toFixed(1)*10 || 'N/A'
+                                                        )}
+                                                    </p>
+                                                </li>
+                                            ))}
                                     </ul>
                                 </Card>
                             </li>

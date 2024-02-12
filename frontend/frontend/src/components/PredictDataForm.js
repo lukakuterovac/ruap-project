@@ -41,52 +41,60 @@ const PredictDataForm = ({ onSubmit }) => {
         textAlign: 'center',
       }}
     >
-      <Form.Item label="Size[cm]:">
+      <Form.Item label="Size:">
         <Slider
-          min={3}
-          max={20}
+          min={1}
+          max={10}
           onChange={(value) => handleSliderChange('Size', value)}
           value={formValues.Size}
         />
-        <div style={{ textAlign: 'center' }}>3cm - 20cm</div>
       </Form.Item>
-      <Form.Item label="Weight[gram]:">
+      <Form.Item label="Weight:">
         <Slider
-          min={30}
-          max={250}
+          min={1}
+          max={10}
           onChange={(value) => handleSliderChange('Weight', value)}
           value={formValues.Weight}
         />
-        <div style={{ textAlign: 'center' }}>30g - 250g</div>
       </Form.Item>
       <Form.Item label="Sweetness">
-        <InputNumber
+        <Slider
+          min={1}
+          max={10}
+          onChange={(value) => handleSliderChange('Sweetness', value)}
           value={formValues.Sweetness}
-          onChange={(value) => handleInputNumberChange('Sweetness', value)}
         />
       </Form.Item>
       <Form.Item label="Crunchiness">
-        <InputNumber
+        <Slider
+          min={1}
+          max={10}
+          onChange={(value) => handleSliderChange('Crunchiness', value)}
           value={formValues.Crunchiness}
-          onChange={(value) => handleInputNumberChange('Crunchiness', value)}
         />
       </Form.Item>
       <Form.Item label="Juiciness">
-        <InputNumber
+        <Slider
+          min={1}
+          max={10}
+          onChange={(value) => handleSliderChange('Juiciness', value)}
           value={formValues.Juiciness}
-          onChange={(value) => handleInputNumberChange('Juiciness', value)}
         />
       </Form.Item>
       <Form.Item label="Ripeness">
-        <InputNumber
+         <Slider
+          min={1}
+          max={10}
+          onChange={(value) => handleSliderChange('Ripeness', value)}
           value={formValues.Ripeness}
-          onChange={(value) => handleInputNumberChange('Ripeness', value)}
         />
       </Form.Item>
       <Form.Item label="Acidity">
-        <InputNumber
+         <Slider
+          min={1}
+          max={10}
+          onChange={(value) => handleSliderChange('Acidity', value)}
           value={formValues.Acidity}
-          onChange={(value) => handleInputNumberChange('Acidity', value)}
         />
       </Form.Item>
       <Form.Item

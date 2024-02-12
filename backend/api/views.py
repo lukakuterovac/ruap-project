@@ -58,8 +58,8 @@ def predict(request):
                     )
 
         # Convert parameter values to [0, 1] range
-        for name, value in parameters.items():
-            parameters[name] = int(value) / 10
+        #for name, value in parameters.items():
+           # parameters[name] = int(value) / 10
 
         # Prepare data to send to the model
         data = {
